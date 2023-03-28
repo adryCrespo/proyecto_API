@@ -6,6 +6,7 @@ Conseguimos las preguntas y respuestas de este [link](https://opentdb.com/api.ph
 
 Se ha usado tkinker para el desarrollo de la intergaz. Y la lógica de todo el programa esta realizado con OOP.
 
+## Interfaz
 ![](https://github.com/adryCrespo/proyecto_API/blob/main/Quizz_API/Interfaz.png)
 
 La interfaz se compone de un canvas en el que se muestra la pregunta actual. 
