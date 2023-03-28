@@ -1,6 +1,6 @@
 # Quizz API
 
-![](https://github.com/adryCrespo/proyecto_API/tree/main/Quizz_API/Interfaz.png)
+![](https://github.com/adryCrespo/proyecto_API/blob/main/Quizz_API/Interfaz.png)
 
 El objetivo de este proyecto es contruir una pequeña aplicacion que haga una especie de trivial con preguntas que solo se puede responder con si o no.
 Conseguimos las preguntas y respuestas de este [link](https://opentdb.com/api.php)
