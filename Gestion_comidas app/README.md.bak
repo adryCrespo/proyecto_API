@@ -9,7 +9,6 @@ En la app se visualizará la comida con distintos colores:
 
 Los plazos para pasar a amarillo y rojo dependen del tipo de comida que sea.
 
- [link](https://opentdb.com/api.php)
 
 Se ha usado tkinker para el desarrollo de la intergaz. Y la lógica de todo el programa esta realizado con OOP.
 Los registros se guardan en una base de datos alchquemy.
