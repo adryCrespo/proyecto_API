@@ -14,9 +14,12 @@ Se ha usado tkinker para el desarrollo de la intergaz. Y la lógica de todo el p
 Los registros se guardan en una base de datos alchquemy.
 
 ## Interfaz
-![](https://github.com/adryCrespo/proyecto_API/blob/main/Quizz_API/Interfaz.png)
 
 La interfaz se compone de dos pantallas.
+
 En la primera se introduce la comida: mediante el nombre de la comida, el tipo de comida que es y la fecha.
+![](https://github.com/adryCrespo/proyecto_API/blob/main/Gestion_comidas%20app/Gestion_comida_1.png)
+
 
 En la segunda se visualiza las coimdas guardadas. También hay opciones para filtrar por colores.
+![](https://github.com/adryCrespo/proyecto_API/blob/main/Gestion_comidas%20app/Gestion_comida_2.png)
