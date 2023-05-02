@@ -3,7 +3,8 @@ from tkinter import ttk
 import datetime
 import pandas as pd
 
-
+import logging
+logging.basicConfig(filename='example.text')
 
 LARGEFONT =("Verdana", 15)
 
@@ -14,6 +15,7 @@ class Vista(tk.Frame):
         tk.Frame.__init__(self, parent)
 
         self.controller = controller
+        
 
         THEME_COLOR = "#BFCCB5"
         self.config(padx=20,pady=20,background=THEME_COLOR)
@@ -53,7 +55,7 @@ class Vista(tk.Frame):
         # Visualizador de registros: Treeview
 
         self.tree = ttk.Treeview(self, column=("Nombre", "Tipo", "Fecha"), show='headings', height=5)
-        self.tree.grid(row=3, column=0, sticky='nsew', columnspan=3, pady=20)
+        self.tree.grid(row=3, column=0, sticky='nsew', columnspan=3,rowspan=10, pady=20)
 
         scrollbar = tk.Scrollbar(self,orient="vertical")
         scrollbar.configure(command=self.tree.yview)
@@ -93,13 +95,17 @@ class Vista(tk.Frame):
 
         # Cambio Frame         
         button_inicio = tk.Button(self, text ="Main",  command = lambda : controller.show_frame2("inicio"))
-        button_inicio.grid(column=0, row=7)
+        button_inicio.grid(column=0, row=20)
 
         button_entradas = tk.Button(self, text ="Entradas Comida",  command = lambda : controller.show_frame2("entradacomida"))
-        button_entradas.grid(column=1, row=7)
+        button_entradas.grid(column=1, row=20)
+
+        button_historico = tk.Button(self, text ="Historico", command = lambda : controller.show_frame2("historico"))
+        button_historico.grid(column=2, row=20, pady=20)
     
     def insertar_entradas_treeview(self, nombre, tipo, fecha_entrada,tag)-> None:
-        self.tree.insert('', 'end', text="1", values=(nombre,tipo, fecha_entrada),tags=(tag,))
+        
+        self.tree.insert('', 'end', text="1", values=(nombre,tipo, fecha_entrada.strftime('%d-%m-%Y')),tags=(tag,))
 
         return None
     
@@ -107,6 +113,7 @@ class Vista(tk.Frame):
     def conseguir_registros_entradas(self):
         # df_registros = self.controller.select_tabla_tipos()
         # df_tipos = pd.DataFrame(self.controller.select_tabla_tipos() )
+
 
         # df = df_registros.merge(df_tipos, on="tipo",how="inner")
 
@@ -135,10 +142,10 @@ class Vista(tk.Frame):
     def borrar_registro_seleccionado(self)-> None:
         """Seleccionar un registro y lo borra"""
         selected_item = self.tree.selection()[0]
-    
+        
         item_valores = self.tree.item(selected_item,option="values")
         
-        self.controller.borrar_entrada_por_indice(id = item_valores[0])
+        self.controller.borrar_entrada_por_indice(item_valores)
         self.tree.delete(selected_item)
         
         return None

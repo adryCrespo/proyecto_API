@@ -37,7 +37,7 @@ class EntradaComida(tk.Frame):
 
         # date entry
         año_actual = datetime.datetime.today().year
-        self.cal = DateEntry(self, width=12, background='darkblue',  foreground='white', borderwidth=2, year=año_actual)
+        self.cal = DateEntry(self, width=12, background='darkblue',  foreground='white', borderwidth=2, year=año_actual,    date_pattern='dd/MM/yyyy')
         self.cal.grid(column = 3, row = 3)
 
 
@@ -58,6 +58,9 @@ class EntradaComida(tk.Frame):
         button_stock = tk.Button(self, text ="Ver comidas", command = lambda : controller.show_frame2("stock"))
         button_stock.grid(column=2, row=6, padx=20)
 
+        button_historico = tk.Button(self, text ="Historico", command = lambda : controller.show_frame2("historico"))
+        button_historico.grid(column=3, row=6, padx=20)
+
     def send_entrada_comida(self):
         
         if (self.isEntryValid(self.entry_comida.get()) is False) or (self.isEntryValid(self.cb_tipo.get()) is False):
@@ -75,6 +78,7 @@ class EntradaComida(tk.Frame):
         self.controller.insertar_entrada( nombre, tipo, fecha)
 
         self.envio_existoso()
+        self.borrado_campos()
         # print(entrada)
         # print(self.entry_comida.get())
         # print(self.cb_tipo.get())
@@ -95,6 +99,58 @@ class EntradaComida(tk.Frame):
             return False
         return True
     
+
+    def borrado_campos(self):
+        # self.
+ 
+        self.entry_comida.delete(0,100) 
+        self.cb_tipo.delete(0, 100) 
+
+
+    def new_tipo(self):
+
+        # new_window = tk.Toplevel(self.controller)
+
+
+        # tipos = Tabla_Tipos(self.controller)
+        # df_tipos = tipos.obtener_daframe()
+        # indice = 2
+        # self.e = tk.Entry(new_window, width=20, font=('Arial',16,'bold'))
+        # self.e.grid(row = 0, column = 0)
+        # self.e.insert(indice, "TIPO COMIDA")
+
+        # self.e = tk.Entry(new_window, width=20, font=('Arial',16,'bold'))
+        # self.e.grid(row = 0, column = 1)
+        # self.e.insert(indice, 'DIAS AMARILLO')
+
+        # self.e = tk.Entry(new_window, width=20, font=('Arial',16,'bold'))
+        # self.e.grid(row = 0, column = 2)
+        # self.e.insert(indice, 'DIAS ROJO')
+
+        # for numero_fila, registro in df_tipos.iterrows():
+        #     for numero_columna,dato in enumerate(registro):
+                 
+        #         self.e = tk.Entry(new_window, width=20, font=('Arial',16,'bold'))
+                 
+        #         self.e.grid(row = numero_fila+1, column = numero_columna)
+        #         self.e.insert(indice, dato)
+        # self.e = tk.Entry(new_window, width=20, font=('Arial',16,'bold'))
+
+
+
+class NewEntradaComida(tk.Toplevel):
+    def __init__(self,  controller):
+        tk.Toplevel.__init__(self)
+
+        THEME_COLOR = "#BFCCB5"
+        TEXT_COLOR = "#7C96AB"
+        self.config(padx=20,pady=20,background=THEME_COLOR)
+     
+
+        self.controller = controller       
+        label = tk.Label(text="lkjljlj")
+        label.grid(column=0,row=0)
+
 if __name__ == "__main__":
 
     qi = EntradaComida()

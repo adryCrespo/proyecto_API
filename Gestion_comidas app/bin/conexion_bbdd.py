@@ -1,7 +1,7 @@
 
 import sqlalchemy as db
 import os, sys
-
+import datetime
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -19,6 +19,14 @@ class ConexionBBDD:
 
         self.entrada_comida = db.Table('Entradas', self.metadata,
               db.Column('id', db.Integer(),primary_key=True),
+              db.Column('nombre', db.String(255), nullable=False),
+              db.Column('tipo', db.String(255), nullable=False),
+              db.Column('fecha_entrada', db.DateTime() , default=True)
+              )
+
+
+        self.historico = db.Table('Historico', self.metadata,
+              
               db.Column('nombre', db.String(255), nullable=False),
               db.Column('tipo', db.String(255), nullable=False),
               db.Column('fecha_entrada', db.DateTime() , default=True)
@@ -48,6 +56,13 @@ class ConexionBBDD:
         """ muestra todos los datos de tabla tipos"""
         
         return self.select_all_rows(self.entrada_comida)
+    
+
+    def select_historico(self):
+        """ muestra todos los datos de tabla tipos"""
+        
+        return self.select_all_rows(self.historico)
+
 
     def insertar_entrada(self, nombre, tipo, fecha):
         """
@@ -56,8 +71,15 @@ class ConexionBBDD:
             tipo: str
             datetime: datetime.datetime(2020,5,18)
             """
+        if isinstance(fecha, str):
+            fecha = datetime.datetime.strptime(fecha, '%Y-%m-%d %H:%M:%S')
         query = db.insert(self.entrada_comida).values( nombre = nombre, tipo = tipo, fecha_entrada = fecha  ) 
         ResultProxy = self.connection.execute(query)
+
+
+        query = db.insert(self.historico).values( nombre = nombre, tipo = tipo, fecha_entrada = fecha  ) 
+        ResultProxy = self.connection.execute(query)
+
         return None
     
     def insertar_tipos(self, tipo, naranja, rojo):
@@ -72,12 +94,23 @@ class ConexionBBDD:
         return None
 
     
-    def borrar_entrada_por_indice(self,id):
+    def borrar_entrada_por_indice(self,registro):
         """
         Inputs:
           index: integer"""
         query = db.delete(self.entrada_comida)
-        query = query.where(self.entrada_comida.columns.id == id)
+
+        nombre = registro[0]
+        tipo = registro[1]
+        fecha_entrada = registro[2]
+        if isinstance(fecha_entrada, str):
+            fecha_entrada = datetime.datetime.strptime(fecha_entrada, '%d-%m-%Y')
+        
+
+        query = query.where(self.entrada_comida.columns.nombre == nombre)\
+                    .where(self.entrada_comida.columns.tipo == tipo)\
+                    .where(self.entrada_comida.columns.fecha_entrada == fecha_entrada)  
+
         self.connection.execute(query)
         
         return None
@@ -104,5 +137,7 @@ if __name__ == "__main__":
 
     # for entrada in lista:
     #     c.insertar_tipos( tipo = entrada[0], naranja = entrada[1], rojo = entrada[2]) 
-        
+    import datetime
+    c.insertar_entrada(  nombre="filete", tipo="carne", fecha=datetime.datetime(2020,5,18)) 
+    print(c.select_tabla_tipos())    
     print(c.select_entrada())
