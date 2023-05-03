@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 import datetime
 from tkcalendar import  DateEntry
+from .entrada_tipo import NewEntradaTipo
+from .entrada_tipo import BorrarTipo
+
 # from main import Inicio
 class EntradaComida(tk.Frame):
     def __init__(self, parent, controller):
@@ -31,7 +34,8 @@ class EntradaComida(tk.Frame):
 
         # Tipo comida
         self.cb_tipo = ttk.Combobox(self)
-        self.cb_tipo['values'] = ('carne', 'pescado', 'mahonesa','salsa','otros')
+        self.cb_tipo['values'] = self.obtener_tipos_existentes()
+         #('carne', 'pescado', 'mahonesa','salsa','otros')
         self.cb_tipo.grid(column = 3, row = 2, padx = 20)
 
 
@@ -45,7 +49,15 @@ class EntradaComida(tk.Frame):
         self.button_stock = tk.Button(self,text="Añadir comida", command=self.send_entrada_comida)
         self.button_stock.grid(column = 1,row = 5)
 
+        self.button_newTipo = tk.Button(self,text="Nuevo Tipo", command=self.new_tipo)
+        self.button_newTipo.grid(column = 2,row = 5)
         
+        self.button_eliminarTipo = tk.Button(self,text="Eliminar Tipo", command=self.borrar_tipo)
+        self.button_eliminarTipo.grid(column=3, row=5)
+
+        self.button_newTipo = tk.Button(self,text="Actualizar Tipos", command=self.actualizar_tipos_pestaña)
+        self.button_newTipo.grid(column = 4,row = 5)
+
         self.status = tk.StringVar() 
         self.label_status = tk.Label (self, textvariable= self.status ,padx=25,background=THEME_COLOR,fg=TEXT_COLOR )
         self.label_status.grid(column=2,row=4)        
@@ -60,6 +72,7 @@ class EntradaComida(tk.Frame):
 
         button_historico = tk.Button(self, text ="Historico", command = lambda : controller.show_frame2("historico"))
         button_historico.grid(column=3, row=6, padx=20)
+        # self.obtener_tipos_existentes()
 
     def send_entrada_comida(self):
         
@@ -108,48 +121,40 @@ class EntradaComida(tk.Frame):
 
 
     def new_tipo(self):
+        new = NewEntradaTipo(self.controller)
+        new.bind("<Destroy>", lambda event: self.actualizar_tipos_pestaña)
+     
+    def borrar_tipo(self):
 
-        # new_window = tk.Toplevel(self.controller)
+        borrar = BorrarTipo(self.controller)
+        
+    def obtener_tipos_existentes(self):
+        registros = self.controller.select_tabla_tipos()
+        lista_elementos = list()
+        for registro in registros:
+          elemento_tipo = registro[0]
+          lista_elementos.append(elemento_tipo) 
+        
+        print(lista_elementos)
+        return tuple(lista_elementos)
 
-
-        # tipos = Tabla_Tipos(self.controller)
-        # df_tipos = tipos.obtener_daframe()
-        # indice = 2
-        # self.e = tk.Entry(new_window, width=20, font=('Arial',16,'bold'))
-        # self.e.grid(row = 0, column = 0)
-        # self.e.insert(indice, "TIPO COMIDA")
-
-        # self.e = tk.Entry(new_window, width=20, font=('Arial',16,'bold'))
-        # self.e.grid(row = 0, column = 1)
-        # self.e.insert(indice, 'DIAS AMARILLO')
-
-        # self.e = tk.Entry(new_window, width=20, font=('Arial',16,'bold'))
-        # self.e.grid(row = 0, column = 2)
-        # self.e.insert(indice, 'DIAS ROJO')
-
-        # for numero_fila, registro in df_tipos.iterrows():
-        #     for numero_columna,dato in enumerate(registro):
-                 
-        #         self.e = tk.Entry(new_window, width=20, font=('Arial',16,'bold'))
-                 
-        #         self.e.grid(row = numero_fila+1, column = numero_columna)
-        #         self.e.insert(indice, dato)
-        # self.e = tk.Entry(new_window, width=20, font=('Arial',16,'bold'))
+    def actualizar_tipos_pestaña(self):
+        self.cb_tipo['values'] = self.obtener_tipos_existentes()
 
 
 
-class NewEntradaComida(tk.Toplevel):
-    def __init__(self,  controller):
-        tk.Toplevel.__init__(self)
+# class NewEntradaComida(tk.Toplevel):
+#     def __init__(self,  controller):
+#         tk.Toplevel.__init__(self)
 
-        THEME_COLOR = "#BFCCB5"
-        TEXT_COLOR = "#7C96AB"
-        self.config(padx=20,pady=20,background=THEME_COLOR)
+#         THEME_COLOR = "#BFCCB5"
+#         TEXT_COLOR = "#7C96AB"
+#         self.config(padx=20,pady=20,background=THEME_COLOR)
      
 
-        self.controller = controller       
-        label = tk.Label(text="lkjljlj")
-        label.grid(column=0,row=0)
+#         self.controller = controller       
+#         label = tk.Label(text="lkjljlj")
+#         label.grid(column=0,row=0)
 
 if __name__ == "__main__":
 

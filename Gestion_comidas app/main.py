@@ -79,9 +79,17 @@ class SobrasApp(tk.Tk):
     def insertar_entrada(self, nombre, tipo, fecha):
         self.conexion_bbdd.insertar_entrada(nombre, tipo, fecha)
         return None
+    
+    def insertar_tipo(self,tipo, naranja, rojo):
+        self.conexion_bbdd.insertar_tipos( tipo, naranja, rojo)
+        return None
 
     def borrar_entrada_por_indice(self,registro):
         self.conexion_bbdd.borrar_entrada_por_indice(registro)
+        return None
+    
+    def borrar_tipo(self,tipo):
+        self.conexion_bbdd.borrar_tipo(tipo)
         return None
 
 class Inicio (tk.Frame):
@@ -98,18 +106,18 @@ class Inicio (tk.Frame):
 
         self.config(padx=20,pady=20,background=THEME_COLOR)
 
-        self.label_titulo = tk.Label (self, text= "Gestion sobras",padx=25,background=THEME_COLOR,fg=TEXT_COLOR )
-        self.label_titulo.grid(column=0,row=1)
+        self.label_titulo = tk.Label (self, text= "Gestion sobras",padx=25,background=THEME_COLOR,fg=TEXT_COLOR,font=50 )
+        self.label_titulo.grid(column=0,columnspan=3,row=1)
 
 
         button_inicio = tk.Button(self, text ="Entrada comida", command = lambda : controller.show_frame2("entradacomida"))
-        button_inicio.grid(column=0, row=2, pady=20)
+        button_inicio.grid(column=0, row=2, padx=20)
 
         button_stock = tk.Button(self, text ="Ver comidas", command = lambda : controller.show_frame2("stock"))
-        button_stock.grid(column=1, row=2, pady=20)
+        button_stock.grid(column=1, row=2, padx=20)
 
         button_historico = tk.Button(self, text ="Historico", command = lambda : controller.show_frame2("historico"))
-        button_historico.grid(column=1, row=3, pady=20)
+        button_historico.grid(column=2, row=2, padx=20)
    
 
 

@@ -114,6 +114,16 @@ class ConexionBBDD:
         self.connection.execute(query)
         
         return None
+    
+    def borrar_tipo(self,tipo):
+        """
+        Inputs:
+          index: integer"""
+        query = db.delete(self.tabla_tipos)
+        query = query.where(self.tabla_tipos.columns.tipo == tipo)
+                    
+        self.connection.execute(query)
+        return None    
 
     def ver_todas_tablas(self):
        
