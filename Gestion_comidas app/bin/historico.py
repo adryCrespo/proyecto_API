@@ -78,7 +78,7 @@ class HistoricoFrame(tk.Frame):
     
     def insertar_entradas_treeview(self, nombre, tipo, fecha_entrada)-> None:
         
-        self.tree.insert('', 'end', text="1", values=(nombre,tipo, fecha_entrada.strftime('%d-%m-%Y')))
+        self.tree.insert('', 'end', text="1", values=(nombre,tipo, fecha_entrada))
 
         return None
     

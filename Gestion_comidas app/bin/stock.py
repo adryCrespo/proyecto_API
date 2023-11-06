@@ -111,14 +111,6 @@ class Vista(tk.Frame):
     
 
     def conseguir_registros_entradas(self):
-        # df_registros = self.controller.select_tabla_tipos()
-        # df_tipos = pd.DataFrame(self.controller.select_tabla_tipos() )
-
-
-        # df = df_registros.merge(df_tipos, on="tipo",how="inner")
-
-
-
 
         tranformaciones = Transformaciones(self.controller, self.obtener_check_aviso(),self.obtener_check_caduco(),self.obtener_check_normal() )
         registros = tranformaciones.obtener_df_filtrado()
@@ -134,6 +126,7 @@ class Vista(tk.Frame):
 
 
     def borrar_treeview_registros(self):
+        """fff"""
         registros = self.tree.get_children()
         for registro in registros:
             self.tree.delete(registro)
@@ -213,10 +206,12 @@ class Transformaciones:
         self.EsNormal = EsNormal
 
     def obtener_entrada(self):
-        return pd.DataFrame(self.controller.select_tabla_entrada() )
+        aux =  pd.DataFrame(self.controller.select_tabla_entrada(),columns=['id','nombre','tipo','fecha_entrada'] )
+        aux['fecha_entrada'] = pd.to_datetime(aux['fecha_entrada'])
+        return aux
 
     def obtener_tip(self):
-        return pd.DataFrame(self.controller.select_tabla_tipos() ) 
+        return pd.DataFrame(self.controller.select_tabla_tipos(),columns=['tipo','naranja','rojo'] ) 
 
     def encontrar_color(self,registro):
         if registro.n_naranja>0: 
@@ -233,11 +228,13 @@ class Transformaciones:
 
         entradas = self.obtener_entrada()
         tipos = self.obtener_tip()
-
+        if entradas.shape[0]==0:
+           return pd.DataFrame(columns=['nombre'	,'tipo',	'fecha_entrada','tag'])
         df = entradas.merge(tipos, how="inner", on="tipo")
 
-        df['f_naranja'] = df.apply(lambda x:  x.fecha_entrada + pd.Timedelta(x.naranja, unit="d"),axis=1).dt.date
-        df['f_rojo'] = df.apply(lambda x:  x.fecha_entrada + pd.Timedelta(x.rojo, unit="d"),axis=1).dt.date
+        df['f_naranja'] = df.apply(lambda x:  x["fecha_entrada"] + pd.Timedelta(x["naranja"], unit="d"),axis=1)
+        # df['f_naranja'] =  df["fecha_entrada"] + pd.Timedelta(df["naranja"])
+        df['f_rojo'] = df.apply(lambda x:  x.fecha_entrada + pd.Timedelta(x["rojo"], unit="d"),axis=1)
 
 
         df['hoy'] = datetime.datetime.now().date()
@@ -249,7 +246,8 @@ class Transformaciones:
 
     def obtener_df_filtrado(self):
         df = self.transformaciones()
-        
+        if df.shape[0]==0:
+           return pd.DataFrame(columns=['nombre'	,'tipo',	'fecha_entrada','tag'])
         c_caducado = df['tag'] == "caducado"
         c_aviso = df['tag'] == "aviso"
         c_normal = df['tag'] == "normal"

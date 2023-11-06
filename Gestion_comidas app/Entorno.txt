@@ -1,0 +1,14 @@
+Entorno "programa32"
+
+Creacion entorno 32 bits en condas
+
+	conda create -n py27_32
+	conda activate py27_32
+	conda config --env --set subdir win-32
+	conda install python=2.7
+
+
+
+
+Cuando se compila con auto-py-to-exe hay que añadir la carpeta babel del entorno conda 
+que estemos usando

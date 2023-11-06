@@ -4,7 +4,7 @@ import tkinter as tk
 
 from bin.entradacomida import EntradaComida
 from bin.stock import Vista
-from bin.conexion_bbdd import ConexionBBDD
+from bin.conexion_bbdd import Comidas_acciones
 from bin.historico import HistoricoFrame
 
 
@@ -17,7 +17,7 @@ class SobrasApp(tk.Tk):
         # __init__ function for class Tk
         tk.Tk.__init__(self, *args, **kwargs)
          
-        self.conexion_bbdd = ConexionBBDD()
+        self.conexion_bbdd = Comidas_acciones()
 
         container = tk.Frame(self) 
         container.pack(side = "top", fill = "both", expand = True)
